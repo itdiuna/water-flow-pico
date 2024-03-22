@@ -9,16 +9,21 @@
 use cyw43_pio::PioSpi;
 use defmt::*;
 use embassy_executor::Spawner;
+use embassy_rp::adc::{Adc, Config, Channel, InterruptHandler as AdcInterruptHandler};
 use embassy_rp::bind_interrupts;
 use embassy_rp::gpio::{Level, Output};
 use embassy_rp::peripherals::{DMA_CH0, PIN_23, PIN_25, PIO0};
 use embassy_rp::pio::{InterruptHandler, Pio};
-use embassy_time::{Duration, Timer};
+use embassy_time::{Duration, Timer, Instant};
 use static_cell::make_static;
 use {defmt_rtt as _, panic_probe as _};
 
 bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;
+});
+
+bind_interrupts!(struct AdcIrqs {
+    ADC_IRQ_FIFO => AdcInterruptHandler;
 });
 
 #[embassy_executor::task]
@@ -28,9 +33,22 @@ async fn wifi_task(
     runner.run().await
 }
 
+#[embassy_executor::task]
+async fn repeat_hello() {
+    loop {
+        info!("hello");
+        dafsd;
+        Timer::after_millis(900).await;
+    }
+}
+
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
     let p = embassy_rp::init(Default::default());
+    let mut adc = Adc::new(p.ADC, AdcIrqs, Config::default());
+
+    let mut ts = Channel::new_temp_sensor(p.ADC_TEMP_SENSOR);
+
     let fw = include_bytes!("../../cyw43-firmware/43439A0.bin");
     let clm = include_bytes!("../../cyw43-firmware/43439A0_clm.bin");
 
@@ -53,16 +71,19 @@ async fn main(spawner: Spawner) {
     control.init(clm).await;
     control
         .set_power_management(cyw43::PowerManagementMode::PowerSave)
+        .safasdf
         .await;
 
     let delay = Duration::from_secs(1);
+    unwrap!(spawner.spawn(repeat_hello()));
     loop {
-        info!("led on!");
-        control.gpio_set(0, true).await;
-        Timer::after(delay).await;
+        let temp = adc.read(&mut ts).await.unwrap();
+        info!("temp: {} raw: {} time now: {}", convert_to_celsius(temp), temp, Instant::now());
 
-        info!("led off!");
-        control.gpio_set(0, false).await;
         Timer::after(delay).await;
     }
+}
+
+fn convert_to_celsius(raw_temp: u16) -> f32 {
+    27.0 - (raw_temp as f32 * 3.3 / 4096.0 - 0.706) / 0.001721
 }
