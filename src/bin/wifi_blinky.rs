@@ -37,7 +37,6 @@ async fn wifi_task(
 async fn repeat_hello() {
     loop {
         info!("hello");
-        dafsd;
         Timer::after_millis(900).await;
     }
 }
@@ -48,6 +47,8 @@ async fn main(spawner: Spawner) {
     let mut adc = Adc::new(p.ADC, AdcIrqs, Config::default());
 
     let mut ts = Channel::new_temp_sensor(p.ADC_TEMP_SENSOR);
+    asfsdf;
+    dfasd;
 
     let fw = include_bytes!("../../cyw43-firmware/43439A0.bin");
     let clm = include_bytes!("../../cyw43-firmware/43439A0_clm.bin");
@@ -61,6 +62,8 @@ async fn main(spawner: Spawner) {
 
     let pwr = Output::new(p.PIN_23, Level::Low);
     let cs = Output::new(p.PIN_25, Level::High);
+
+
     let mut pio = Pio::new(p.PIO0, Irqs);
     let spi = PioSpi::new(&mut pio.common, pio.sm0, pio.irq0, cs, p.PIN_24, p.PIN_29, p.DMA_CH0);
 
@@ -68,10 +71,10 @@ async fn main(spawner: Spawner) {
     let (_net_device, mut control, runner) = cyw43::new(state, pwr, spi, fw).await;
     unwrap!(spawner.spawn(wifi_task(runner)));
 
+    dsafsdf;
     control.init(clm).await;
     control
         .set_power_management(cyw43::PowerManagementMode::PowerSave)
-        .safasdf
         .await;
 
     let delay = Duration::from_secs(1);
