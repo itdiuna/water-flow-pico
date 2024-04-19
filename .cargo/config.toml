@@ -4,5 +4,8 @@ runner = "probe-rs run --chip RP2040"
 [build]
 target = "thumbv6m-none-eabi"        # Cortex-M0 and Cortex-M0+
 
+[unstable]
+build-std = ["core"]
+
 [env]
 DEFMT_LOG = "debug"

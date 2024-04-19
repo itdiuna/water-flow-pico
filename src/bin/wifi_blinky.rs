@@ -47,8 +47,6 @@ async fn main(spawner: Spawner) {
     let mut adc = Adc::new(p.ADC, AdcIrqs, Config::default());
 
     let mut ts = Channel::new_temp_sensor(p.ADC_TEMP_SENSOR);
-    asfsdf;
-    dfasd;
 
     let fw = include_bytes!("../../cyw43-firmware/43439A0.bin");
     let clm = include_bytes!("../../cyw43-firmware/43439A0_clm.bin");
@@ -71,7 +69,6 @@ async fn main(spawner: Spawner) {
     let (_net_device, mut control, runner) = cyw43::new(state, pwr, spi, fw).await;
     unwrap!(spawner.spawn(wifi_task(runner)));
 
-    dsafsdf;
     control.init(clm).await;
     control
         .set_power_management(cyw43::PowerManagementMode::PowerSave)

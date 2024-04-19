@@ -620,7 +620,7 @@ dependencies = [
  "embassy-usb-driver",
  "heapless 0.8.0",
  "ssmarshal",
- "usbd-hid",
+ "usbd-hid 0.6.1",
 ]
 
 [[package]]
@@ -1501,12 +1501,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustc-std-workspace-core"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1956f5517128a2b6f23ab2dadf1a976f4f5b27962e7724c2bf3d45e539ec098c"
-
-[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1802,6 +1796,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f6cc3adc849b5292b4075fc0d5fdcf2f24866e88e336dd27a8943090a520508"
 
 [[package]]
+name = "usb-device"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98816b1accafbb09085168b90f27e93d790b4bfa19d883466b5e53315b5f06a6"
+dependencies = [
+ "heapless 0.8.0",
+ "portable-atomic",
+]
+
+[[package]]
 name = "usbd-hid"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1809,7 +1813,19 @@ checksum = "975bd411f4a939986751ea09992a24fa47c4d25c6ed108d04b4c2999a4fd0132"
 dependencies = [
  "serde",
  "ssmarshal",
- "usb-device",
+ "usb-device 0.2.9",
+ "usbd-hid-macros",
+]
+
+[[package]]
+name = "usbd-hid"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41a2d4546ca3e6a5c6a85584e5caf29feabf3ec35d6cd6b772eb35bd3cff7256"
+dependencies = [
+ "serde",
+ "ssmarshal",
+ "usb-device 0.3.2",
  "usbd-hid-macros",
 ]
 
@@ -1908,11 +1924,10 @@ dependencies = [
  "pio-proc",
  "portable-atomic",
  "rand",
- "rustc-std-workspace-core",
  "smart-leds",
  "st7789",
  "static_cell",
- "usbd-hid",
+ "usbd-hid 0.7.0",
 ]
 
 [[package]]
