@@ -6,8 +6,7 @@
 #![no_main]
 #![feature(type_alias_impl_trait)]
 
-use cyw43_pio::PioSpi;
-use defmt::*;
+use cyw43_pio::PioSpi; use defmt::*;
 use embassy_executor::Spawner;
 use embassy_rp::adc::{Adc, Config, Channel, InterruptHandler as AdcInterruptHandler};
 use embassy_rp::bind_interrupts;
@@ -87,3 +86,4 @@ async fn main(spawner: Spawner) {
 fn convert_to_celsius(raw_temp: u16) -> f32 {
     27.0 - (raw_temp as f32 * 3.3 / 4096.0 - 0.706) / 0.001721
 }
+
