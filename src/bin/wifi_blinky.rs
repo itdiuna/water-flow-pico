@@ -12,7 +12,7 @@ use embassy_executor::Spawner;
 use embassy_rp::adc::{Adc, Config, Channel, InterruptHandler as AdcInterruptHandler};
 use embassy_rp::bind_interrupts;
 use embassy_rp::gpio::{Level, Output};
-use embassy_rp::peripherals::{DMA_CH0, PIN_23, PIN_25, PIO0};
+use embassy_rp::peripherals::{DMA_CH0, PIO0};
 use embassy_rp::pio::{InterruptHandler, Pio};
 use embassy_time::{Duration, Timer, Instant};
 use static_cell::StaticCell;
